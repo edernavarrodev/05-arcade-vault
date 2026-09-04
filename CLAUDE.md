@@ -10,20 +10,16 @@ Arcade Vault — plataforma para jugar online y competir por puntos. Next.js 16.
 
 **IMPORTANT**: Next.js 16 in `node_modules/next/dist/docs/01-app/` has breaking changes vs. training data. Check the relevant doc there before using App Router APIs.
 
-## Commands
 
-```bash
-npm run dev      # start dev server (Turbopack)
-npm run build    # production build
-npm run start    # run production build
-npm run lint     # eslint (flat config, eslint.config.mjs)
-```
 
 No test runner configured yet.
 
 ## Spec-driven workflow
 
 This project follows spec-driven design via `/spec` and `/spec-impl` skills from https://github.com/Klerith/fernando-skills (installed via `npx skills@latest add Klerith/fernando-skills`). Use these commands for planning/implementing features rather than ad hoc changes.
+
+## Skills
+Always use the /frontend-design skill to design user interfaces. 
 
 ## Architecture notes
 
