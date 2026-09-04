@@ -1,6 +1,6 @@
 # 01 — MVP pantallas Arcade Vault
 
-**Estado:** Approved
+**Estado:** Implementado
 **Depende de:** —
 **Fecha:** 2026-09-04
 
@@ -84,16 +84,16 @@ Cada paso deja el proyecto compilando y navegable.
 
 ## Criterios de aceptación
 
-- [ ] `npm run dev` levanta sin errores y `/` muestra la Biblioteca con hero, buscador funcional (filtra por texto) y chips de categoría (filtran por `cat`).
-- [ ] Click en una card o "JUGAR" navega a `/juegos/[id]` mostrando datos correctos del juego y un leaderboard con 10 filas.
-- [ ] "JUGAR AHORA" en detalle navega a `/juegos/[id]/jugar`; el HUD muestra puntuación subiendo sola, nivel incrementa cada 2500 pts, PAUSA detiene el contador, FIN abre el modal de game over.
-- [ ] Guardar puntuación en el modal persiste en `localStorage("av_scores")` y muestra el toast "PUNTUACIÓN GUARDADA".
-- [ ] `/auth` permite iniciar sesión (cualquier usuario/contraseña), crear cuenta o entrar como invitado; tras login el Nav muestra el nombre de usuario y persiste tras recargar la página (`localStorage("av_user")`).
-- [ ] Logout desde el Nav limpia la sesión y el botón vuelve a "Iniciar Sesión".
-- [ ] `/salon` muestra podio + tabla por juego seleccionado; con sesión iniciada aparece la fila "tu mejor marca".
-- [ ] Nav resalta la sección activa (Biblioteca activo también en `/juegos/*`) y el panel móvil funciona por debajo de 840px.
-- [ ] Ningún juego tiene lógica jugable real — el reproductor es 100% decorativo/mock.
-- [ ] No quedan referencias al skeleton de `create-next-app` (logos Next.js/Vercel) en las pantallas finales.
+- [x] `npm run dev` levanta sin errores y `/` muestra la Biblioteca con hero, buscador funcional (filtra por texto) y chips de categoría (filtran por `cat`).
+- [x] Click en una card o "JUGAR" navega a `/juegos/[id]` mostrando datos correctos del juego y un leaderboard con 10 filas.
+- [x] "JUGAR AHORA" en detalle navega a `/juegos/[id]/jugar`; el HUD muestra puntuación subiendo sola, nivel incrementa cada 2500 pts, PAUSA detiene el contador, FIN abre el modal de game over.
+- [x] Guardar puntuación en el modal persiste en `localStorage("av_scores")` y muestra el toast "PUNTUACIÓN GUARDADA".
+- [x] `/auth` permite iniciar sesión (cualquier usuario/contraseña), crear cuenta o entrar como invitado; tras login el Nav muestra el nombre de usuario y persiste tras recargar la página (`localStorage("av_user")`).
+- [x] Logout desde el Nav limpia la sesión y el botón vuelve a "Iniciar Sesión".
+- [x] `/salon` muestra podio + tabla por juego seleccionado; con sesión iniciada aparece la fila "tu mejor marca".
+- [x] Nav resalta la sección activa (Biblioteca activo también en `/juegos/*`) y el panel móvil funciona por debajo de 840px.
+- [x] Ningún juego tiene lógica jugable real — el reproductor es 100% decorativo/mock.
+- [x] No quedan referencias al skeleton de `create-next-app` (logos Next.js/Vercel) en las pantallas finales.
 
 ## Decisiones tomadas y descartadas
 
