@@ -1,6 +1,6 @@
 # 03 — About y contacto con Resend
 
-**Estado:** Approved
+**Estado:** Implementado
 **Depende de:** SPEC 02
 **Fecha:** 2026-09-04
 
@@ -57,14 +57,14 @@ Cada paso deja el proyecto compilando y navegable.
 
 ## Criterios de aceptación
 
-- [ ] `npm run dev` levanta sin errores; `/acerca-de` muestra hero, highlight-row, divisor animado y sección de contacto, igual al template.
-- [ ] Nav muestra "Acerca de" como link y lo resalta como activo en `/acerca-de`.
-- [ ] Enviar el formulario con campos vacíos dispara el shake y no hace petición al servidor.
-- [ ] Enviar el formulario con datos válidos y `RESEND_API_KEY` válida entrega un correo real a `edernavarro.dev@gmail.com` y muestra el bloque `terminal-success` con el nombre ingresado.
-- [ ] Si `POST /api/contact` falla (Resend rechaza, red cae, o key inválida), se muestra un mensaje de error bajo el formulario y los datos ingresados no se pierden.
-- [ ] `app/api/contact/route.ts` valida formato de email y campos no vacíos antes de invocar Resend, devolviendo 400 si la validación falla.
-- [ ] `RESEND_API_KEY` no está hardcodeada en el código ni versionada (vive en `.env.local`).
-- [ ] Animaciones reveal disparan al hacer scroll en `/acerca-de`.
+- [x] `npm run dev` levanta sin errores; `/acerca-de` muestra hero, highlight-row, divisor animado y sección de contacto, igual al template.
+- [x] Nav muestra "Acerca de" como link y lo resalta como activo en `/acerca-de`.
+- [x] Enviar el formulario con campos vacíos dispara el shake y no hace petición al servidor.
+- [x] Enviar el formulario con datos válidos y `RESEND_API_KEY` válida entrega un correo real a `edernavarro.dev@gmail.com` y muestra el bloque `terminal-success` con el nombre ingresado.
+- [x] Si `POST /api/contact` falla (Resend rechaza, red cae, o key inválida), se muestra un mensaje de error bajo el formulario y los datos ingresados no se pierden.
+- [x] `app/api/contact/route.ts` valida formato de email y campos no vacíos antes de invocar Resend, devolviendo 400 si la validación falla.
+- [x] `RESEND_API_KEY` no está hardcodeada en el código ni versionada (vive en `.env.local`).
+- [x] Animaciones reveal disparan al hacer scroll en `/acerca-de`.
 
 ## Decisiones tomadas y descartadas
 
