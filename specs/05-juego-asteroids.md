@@ -1,6 +1,6 @@
 # 05 — Juego Asteroids
 
-**Estado:** Approved
+**Estado:** Implemented
 **Depende de:** SPEC 01
 **Fecha:** 2026-09-07
 
@@ -103,19 +103,19 @@ Cada paso deja el proyecto compilando y navegable.
 
 ## Criterios de aceptación
 
-- [ ] `lib/data.ts` ya no tiene ningún objeto con `id: "rocas"`; existe uno con `id: "asteroids"`.
-- [ ] `/juegos/asteroids` muestra el detalle correcto (título, descripción, leaderboard) y el CTA navega a `/juegos/asteroids/jugar`.
-- [ ] En `/juegos/asteroids/jugar` se ve el canvas del juego real (nave, asteroides, disparo) en vez del `game-arena` decorativo.
-- [ ] Teclado funciona igual que el original: `←`/`→` rota, `↑` propulsa, `Espacio` dispara, `B` detona nova si hay cargas.
-- [ ] Los 5 botones táctiles (izq/der/propulsar/disparar/nova) aparecen en viewport móvil y controlan la nave igual que el teclado.
-- [ ] `player-hud` (score, vidas, nivel) se actualiza en tiempo real reflejando el estado real del motor, no un mock.
-- [ ] Power-ups (triple, nova, escudo, slow) se recogen, se activan visualmente en el HUD de la plataforma (no el HUD dibujado en canvas) y expiran correctamente.
-- [ ] Botón "PAUSA" detiene la partida (asteroides/nave/spawns dejan de moverse) y "REANUDAR" la continúa sin perder estado.
-- [ ] Al perder la tercera vida se abre automáticamente el modal de fin de partida existente, con el score final correcto.
-- [ ] Guardar puntuación en el modal persiste en `localStorage("av_scores")` con `game: "asteroids"`.
-- [ ] "JUGAR DE NUEVO" desde el modal reinicia una partida nueva del motor (no solo resetea el mock).
-- [ ] Salir de la página (botón "SALIR" o navegación) detiene el loop del motor y remueve sus listeners de teclado (sin fugas al volver a entrar).
-- [ ] Los demás juegos del catálogo (`bloque-buster`, `caida`, etc.) siguen mostrando el reproductor mock sin cambios de comportamiento.
+- [x] `lib/data.ts` ya no tiene ningún objeto con `id: "rocas"`; existe uno con `id: "asteroids"`.
+- [x] `/juegos/asteroids` muestra el detalle correcto (título, descripción, leaderboard) y el CTA navega a `/juegos/asteroids/jugar`.
+- [x] En `/juegos/asteroids/jugar` se ve el canvas del juego real (nave, asteroides, disparo) en vez del `game-arena` decorativo.
+- [x] Teclado funciona igual que el original: `←`/`→` rota, `↑` propulsa, `Espacio` dispara, `B` detona nova si hay cargas.
+- [x] Los 5 botones táctiles (izq/der/propulsar/disparar/nova) aparecen en viewport móvil y controlan la nave igual que el teclado.
+- [x] `player-hud` (score, vidas, nivel) se actualiza en tiempo real reflejando el estado real del motor, no un mock.
+- [x] Power-ups (triple, nova, escudo, slow) se recogen, se activan visualmente en el HUD de la plataforma (no el HUD dibujado en canvas) y expiran correctamente.
+- [x] Botón "PAUSA" detiene la partida (asteroides/nave/spawns dejan de moverse) y "REANUDAR" la continúa sin perder estado.
+- [x] Al perder la tercera vida se abre automáticamente el modal de fin de partida existente, con el score final correcto.
+- [x] Guardar puntuación en el modal persiste en `localStorage("av_scores")` con `game: "asteroids"`.
+- [x] "JUGAR DE NUEVO" desde el modal reinicia una partida nueva del motor (no solo resetea el mock).
+- [x] Salir de la página (botón "SALIR" o navegación) detiene el loop del motor y remueve sus listeners de teclado (sin fugas al volver a entrar).
+- [x] Los demás juegos del catálogo (`bloque-buster`, `caida`, etc.) siguen mostrando el reproductor mock sin cambios de comportamiento.
 
 ## Decisiones tomadas y descartadas
 

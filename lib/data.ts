@@ -70,10 +70,10 @@ export const GAMES: Game[] = [
     plays: "18.0K",
   },
   {
-    id: "rocas",
-    title: "ROCAS",
+    id: "asteroids",
+    title: "ASTEROIDS",
     short: "Pulveriza asteroides en gravedad cero.",
-    long: "Tu nave triangular flota en vacío absoluto. Dispara y rota para dividir rocas en fragmentos cada vez más pequeños. Cuidado con los OVNIs en el horizonte.",
+    long: "Tu nave triangular flota en vacío absoluto. Dispara y rota para dividir rocas en fragmentos cada vez más pequeños. Recoge power-ups: triple disparo, escudo, bomba nova y cámara lenta.",
     cat: "SHOOTER",
     cover: "cover-rocas",
     color: "yellow",
