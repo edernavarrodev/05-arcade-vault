@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const j=JSON.parse(d);process.stdout.write(j.tool_input.file_path||'')}catch(e){}})\" | { read -r f; case \"$f\" in *.tsx|*.jsx|*.md) npx prettier --write \"$f\" 2>/dev/null;; esac; case \"$f\" in *.tsx|*.jsx) npx eslint --fix \"$f\" 2>/dev/null;; esac; } || true",
+            "timeout": 60,
+            "statusMessage": "Formatting with Prettier/ESLint..."
+          }
+        ]
+      }
+    ]
+  }
+}
