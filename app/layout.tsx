@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
 import { SessionProvider } from "@/lib/session";
 import Nav from "@/components/Nav";
+import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
 const pixelFont = Press_Start_2P({
@@ -20,12 +21,21 @@ export const metadata: Metadata = {
   description: "Plataforma para jugar online y competir por puntos",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Verificación temporal SPEC 04: confirma que el cliente Supabase conecta sin error.
+  const supabase = await createClient();
+  const { error } = await supabase.from("nonexistent_check").select("*").limit(1);
+  console.log(
+    "[supabase check]",
+    error?.code === "42P01"
+      ? "conexión OK (tabla no existe, esperado)"
+      : error
+        ? error.message
+        : "OK",
+  );
+
   return (
-    <html
-      lang="es"
-      className={`${pixelFont.variable} ${monoFont.variable} h-full antialiased`}
-    >
+    <html lang="es" className={`${pixelFont.variable} ${monoFont.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <SessionProvider>
           <Nav />
