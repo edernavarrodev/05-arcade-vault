@@ -1,17 +1,26 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GAMES, seededScores } from "@/lib/data";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { getGame } from "@/lib/supabase/queries";
+import { getTopScores } from "@/lib/supabase/scores";
+import { createClient } from "@/lib/supabase/server";
 
-export function generateStaticParams() {
-  return GAMES.map((g) => ({ id: g.id }));
+export async function generateStaticParams() {
+  const supabase = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+  );
+  const { data } = await supabase.from("games").select("id");
+  return (data ?? []).map((g) => ({ id: g.id }));
 }
 
 export default async function GameDetailPage({ params }: PageProps<"/juegos/[id]">) {
   const { id } = await params;
-  const game = GAMES.find((g) => g.id === id);
+  const game = await getGame(id);
   if (!game) notFound();
 
-  const scores = seededScores(id.length * 17 + 3, 10);
+  const supabase = await createClient();
+  const scores = await getTopScores(id, 10, supabase);
 
   return (
     <div className="av-detail fade-in">
@@ -31,7 +40,7 @@ export default async function GameDetailPage({ params }: PageProps<"/juegos/[id]
           <div className="stat-strip">
             <div>
               <div className="l">Partidas</div>
-              <div className="v">{game.plays}</div>
+              <div className="v">{game.plays.toLocaleString("es-ES")}</div>
             </div>
             <div>
               <div className="l">Mejor global</div>
@@ -44,14 +53,17 @@ export default async function GameDetailPage({ params }: PageProps<"/juegos/[id]
             </div>
             <div>
               <div className="l">Dificultad</div>
-              <div className="v" style={{ color: "var(--yellow)", textShadow: "0 0 6px rgba(245,255,0,0.5)" }}>
-                ★ ★ ★ ☆ ☆
+              <div
+                className="v"
+                style={{ color: "var(--yellow)", textShadow: "0 0 6px rgba(245,255,0,0.5)" }}
+              >
+                {"★ ".repeat(game.dificultad) + "☆ ".repeat(5 - game.dificultad)}
               </div>
             </div>
           </div>
           <div className="detail-actions">
             <Link href={`/juegos/${game.id}/jugar`} className="btn xl pulse">
-              ▶  JUGAR AHORA
+              ▶ JUGAR AHORA
             </Link>
             <Link href="/" className="btn ghost lg">
               VOLVER AL VAULT
@@ -66,7 +78,9 @@ export default async function GameDetailPage({ params }: PageProps<"/juegos/[id]
           {scores.map((r, i) => (
             <div
               key={r.name}
-              className={"lb-row" + (i === 0 ? " top1" : i === 1 ? " top2" : i === 2 ? " top3" : "")}
+              className={
+                "lb-row" + (i === 0 ? " top1" : i === 1 ? " top2" : i === 2 ? " top3" : "")
+              }
             >
               <div className="rk">#{String(r.rank).padStart(2, "0")}</div>
               <div className="pl">
