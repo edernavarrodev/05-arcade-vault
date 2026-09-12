@@ -1,6 +1,6 @@
 # 06 — Leaderboard y tabla de juegos
 
-**Estado:** Implementado
+**Estado:** Implemented
 **Depende de:** SPEC 01, SPEC 04
 **Fecha:** 2026-09-11
 
