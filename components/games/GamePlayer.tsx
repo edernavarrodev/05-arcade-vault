@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import type { Game } from "@/lib/data";
 import { saveScore } from "@/lib/scores";
 import { useSession } from "@/lib/session";
-import AsteroidsGame, { type AsteroidsGameHandle } from "@/components/games/AsteroidsGame";
-import type { AsteroidsState } from "@/lib/games/asteroids/engine";
+import { getGameRegistryEntry } from "@/lib/games/registry";
+import type { GameComponentHandle } from "@/lib/games/types";
 
 type SaveStatus = "idle" | "guardando" | "guardado" | "error";
 
 export default function GamePlayer({ game }: { game: Game }) {
   const router = useRouter();
   const { user } = useSession();
-  const isAsteroids = game.id === "asteroids";
+  const entry = getGameRegistryEntry(game.id);
 
   const [score, setScore] = useState(0);
   const [lives] = useState(3);
@@ -22,8 +22,9 @@ export default function GamePlayer({ game }: { game: Game }) {
   const [over, setOver] = useState(false);
   const [name, setName] = useState(user ? user.name : "INVITADO");
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
-  const [engineState, setEngineState] = useState<AsteroidsState | null>(null);
-  const asteroidsRef = useRef<AsteroidsGameHandle>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- estado genérico: cada juego del registry define su propio TState
+  const [engineState, setEngineState] = useState<any>(null);
+  const gameRef = useRef<GameComponentHandle>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -31,38 +32,48 @@ export default function GamePlayer({ game }: { game: Game }) {
   }, [user]);
 
   useEffect(() => {
-    if (isAsteroids || over || paused) return;
+    if (entry || over || paused) return;
     const t = setInterval(() => setScore((s) => s + Math.floor(10 + Math.random() * 90)), 220);
     return () => clearInterval(t);
-  }, [isAsteroids, over, paused]);
+  }, [entry, over, paused]);
 
   useEffect(() => {
-    if (isAsteroids) return;
+    if (entry) return;
     if (score > 0 && score % 2500 < 100) setLevel((l) => l + 1);
-  }, [isAsteroids, score]);
+  }, [entry, score]);
 
   useEffect(() => {
-    if (isAsteroids && engineState?.phase === "gameover") setOver(true);
-  }, [isAsteroids, engineState?.phase]);
+    if (entry && engineState && entry.isOver(engineState)) setOver(true);
+  }, [entry, engineState]);
 
-  const displayScore = isAsteroids ? (engineState?.score ?? 0) : score;
-  const displayLives = isAsteroids ? (engineState?.lives ?? 3) : lives;
-  const displayLevel = isAsteroids ? (engineState?.level ?? 1) : level;
+  useEffect(() => {
+    if (entry && engineState && typeof engineState.paused === "boolean") {
+      setPaused(engineState.paused);
+    }
+  }, [entry, engineState]);
+
+  const displayScore = entry ? (engineState ? entry.getScore(engineState) : 0) : score;
+  const displayLives = entry
+    ? engineState && entry.getLives
+      ? entry.getLives(engineState)
+      : 3
+    : lives;
+  const displayLevel = entry ? (engineState ? entry.getLevel(engineState) : 1) : level;
 
   const endGame = () => setOver(true);
   const togglePause = () => {
     setPaused((p) => {
       const next = !p;
-      if (isAsteroids) {
-        if (next) asteroidsRef.current?.pause();
-        else asteroidsRef.current?.resume();
+      if (entry) {
+        if (next) gameRef.current?.pause();
+        else gameRef.current?.resume();
       }
       return next;
     });
   };
   const restart = () => {
-    if (isAsteroids) {
-      asteroidsRef.current?.restart();
+    if (entry) {
+      gameRef.current?.restart();
     } else {
       setScore(0);
       setLevel(1);
@@ -104,34 +115,13 @@ export default function GamePlayer({ game }: { game: Game }) {
             <div className="l">Nivel</div>
             <div className="v">{String(displayLevel).padStart(2, "0")}</div>
           </div>
-          {isAsteroids && engineState && (
-            <div className="hud-powerups">
-              {engineState.powerups.triple > 0 && (
-                <span className="hud-powerup triple">
-                  TRIPLE {engineState.powerups.triple.toFixed(1)}s
-                </span>
-              )}
-              {engineState.powerups.shield > 0 && (
-                <span className="hud-powerup shield">
-                  ESCUDO {engineState.powerups.shield.toFixed(1)}s
-                </span>
-              )}
-              {engineState.powerups.slow > 0 && (
-                <span className="hud-powerup slow">
-                  SLOW {engineState.powerups.slow.toFixed(1)}s
-                </span>
-              )}
-              {engineState.powerups.novaCharges > 0 && (
-                <span className="hud-powerup nova">NOVA x{engineState.powerups.novaCharges}</span>
-              )}
-            </div>
-          )}
+          {entry?.renderExtraHud && engineState && entry.renderExtraHud(engineState)}
         </div>
         <div className="hud-actions">
           <button className="btn yellow" onClick={togglePause}>
             {paused ? "REANUDAR" : "PAUSA"}
           </button>
-          {!isAsteroids && (
+          {!entry && (
             <button className="btn magenta" onClick={endGame}>
               FIN
             </button>
@@ -144,8 +134,8 @@ export default function GamePlayer({ game }: { game: Game }) {
 
       <div className="crt">
         <div className="crt-screen">
-          {isAsteroids ? (
-            <AsteroidsGame ref={asteroidsRef} onStateChange={setEngineState} />
+          {entry ? (
+            <entry.Component ref={gameRef} onStateChange={setEngineState} />
           ) : (
             <div className="game-arena">
               <div className="grid-floor"></div>
